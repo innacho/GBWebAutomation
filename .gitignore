@@ -1,3 +1,5 @@
 .idea
 target
 GBwebAutomation.iml
+src/main/java/org/chonka/OpenAccountSettingsTest.java
+src/main/java/org/chonka/App.java
