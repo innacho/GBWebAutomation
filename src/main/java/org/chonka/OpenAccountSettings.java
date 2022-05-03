@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class OpenAccountSettingsTest {
+public class OpenAccountSettings {
     // test to open Account settings page for atlassian user
     public static void main(String[] args) {
         WebDriverManager.chromedriver().setup();

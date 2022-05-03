@@ -2,6 +2,7 @@ package org.chonka;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,8 +12,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
-public class LogoutTest {
-    // testing logout from atlassian account
+public class OpenProfilePage {
+    // test for opening jira user profile page
     public static void main(String[] args) {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
@@ -41,33 +42,28 @@ public class LogoutTest {
         // step5: click login button
         loginSubmitButton.click();
 
-        //waiting for private page loading to perform logout
+        // step6: opening jira product
+        WebElement jiraProductButton = driver.findElement(By.cssSelector("div[data-testid=\"product-container\"] a:nth-child(1) button"));
+        jiraProductButton.click();
+
+        // waiting for jira page to load
         new WebDriverWait(driver, 5)
-                .until(ExpectedConditions
-                        .visibilityOfElementLocated(By.cssSelector("button[data-testid = nav__profile-menu-trigger]")));
+                .until(ExpectedConditions.elementToBeClickable(By
+                        .cssSelector("span[data-test-id=\"ak-spotlight-target-profile-spotlight\"]")));
 
-        // step6: opening profile menu
-        WebElement profileMenuButton = driver.findElement(By.cssSelector("button[data-testid = nav__profile-menu-trigger]"));
-        profileMenuButton.click();
+        // step7: opening header profile menu
+        WebElement headerProfileMenuButton = driver.findElement(By.cssSelector("span[data-test-id=\"ak-spotlight-target-profile-spotlight\"]"));
+        headerProfileMenuButton.click();
 
-        // step7: click logout button
-        WebElement profileMenuLogoutButton = driver.findElement(By
-                .cssSelector("button[data-testid=\"nav__logout-btn\"]"));
-        profileMenuLogoutButton.click();
+        // step8: click profile menu element
+        WebElement profileMenuElement = driver.findElement(By
+                .cssSelector("div[role=\"group\"]:nth-child(2) div[data-ds--menu--heading-item=\"true\"]+a[href=\"/jira/people/60212468988758006877a1a6\"]"));
+        profileMenuElement.click();
 
-        // step8: confirm logout
-        WebElement logoutSubmitButton = driver.findElement(By.id("logout-submit"));
-        logoutSubmitButton.click();
-
-        //waiting for public page loading to assert logout
-        new WebDriverWait(driver, 5)
-                .until(ExpectedConditions
-                        .visibilityOfElementLocated(By.id("username")));
-
-        //assert on login page, has username field
-        WebElement loginFieldAfter = driver.findElement(By.id("username"));
-        boolean isLoginField = loginFieldAfter.isDisplayed();
-        if(isLoginField) System.out.println("Logout test passed!");
+        //assert on profile email
+        WebElement profileEmail = driver.findElement(By.cssSelector("div[data-test-selector=\"profile-about-item-email\"]"));
+        String email = profileEmail.getText();
+        if(email.equals("chonkainna@mail.ru")) System.out.println("Open profile page test passed!");
         //Завершаем работу с ресурсом
         // driver.quit();
     }

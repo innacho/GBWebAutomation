@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
-public class CreateIssueTest {
+public class CreateIssue {
     // creating jira issue test
     public static void main(String[] args) {
         WebDriverManager.chromedriver().setup();
