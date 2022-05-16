@@ -1,7 +1,8 @@
 package JiraTests;
+import JiraTests.Helpers.AuthenticationMethods;
 import org.junit.jupiter.api.*;
 
-public class AbstractTestPrivate extends AuthenticationMethods{
+public class AbstractTestPrivate extends AuthenticationMethods {
 
     @BeforeAll
     static void initCall(){
@@ -10,8 +11,8 @@ public class AbstractTestPrivate extends AuthenticationMethods{
 
     @BeforeEach
     void goToCall(){
-        goTo();
-        loginMethod();
+        goToLogin();
+        loginMethod("PASSWORD");
     }
 
     @AfterEach
