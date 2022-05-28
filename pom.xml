@@ -139,7 +139,7 @@
         <version> ${allure-maven.version} </version>
         <configuration>
 
-          <buildDirectory>C:\Users\Инна\Desktop\обучение\Java\GBwebAutomation</buildDirectory>
+          <buildDirectory>./</buildDirectory>
         </configuration>
       </plugin>
     </plugins>
