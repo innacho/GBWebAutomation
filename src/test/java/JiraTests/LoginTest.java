@@ -2,21 +2,18 @@ package JiraTests;
 
 import JiraTests.PageObjects.LoginPage;
 import JiraTests.PageObjects.StartPage;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 
-
+@Feature("Authentication")
 public class LoginTest extends AbstractTestPublic {
 
-    @DisplayName("Positive login test")
+    @DisplayName("Positive atlassian system login test")
+    @Description("User with valid credentials can login to atlassian")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
     void positiveTest() {
         loginMethod("PASSWORD");
-
-        try{
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         String name = new StartPage()
                 .openMenu()
@@ -26,7 +23,9 @@ public class LoginTest extends AbstractTestPublic {
         Assertions.assertEquals("INNA", name, "Wrong profile name" );
     }
 
-    @DisplayName("Negative login test: user with wrong password cannot login")
+    @DisplayName("Negative atlassian system login test")
+    @Description("User with wrong password can't login to atlassian")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
     void negativeTest() {
         loginMethod("WRONG_PASSWORD");

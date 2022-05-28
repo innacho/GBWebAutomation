@@ -1,6 +1,7 @@
 package JiraTests.PageObjects;
 
-import JiraTests.Helpers.DriverMethods;
+import JiraTests.utils.DriverMethods;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 
@@ -22,21 +23,25 @@ public class LoginPage extends DriverMethods {
         PageFactory.initElements(getDriver(), this);
     }
 
+    @Step("Fill login field")
     public LoginPage fillLoginField(String username){
         loginField.sendKeys(username);
         return this;
     }
 
+    @Step("Click login button")
     public LoginPage clickLoginButton(){
         loginSubmitButton.click();
         return this;
     }
 
+    @Step("Fill password field")
     public LoginPage fillPasswordField(String password){
         passwordField.sendKeys(password);
         return this;
     }
 
+    @Step("Get reset password link")
     public String getErrorLoginLink(){
         return errorLoginLink.getAttribute("href");
     }

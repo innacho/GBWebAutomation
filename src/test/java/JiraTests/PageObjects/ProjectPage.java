@@ -1,11 +1,16 @@
 package JiraTests.PageObjects;
 
-import JiraTests.Helpers.DriverMethods;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
+import JiraTests.utils.DriverMethods;
+import JiraTests.utils.MyUtils;
+import io.qameta.allure.Attachment;
+import io.qameta.allure.Step;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class ProjectPage extends DriverMethods {
 
@@ -48,94 +53,110 @@ public class ProjectPage extends DriverMethods {
     @FindBy(css="div[data-test-id=\"issue.views.issue-base.foundation.breadcrumbs.breadcrumb-current-issue-container\"] button")
     private WebElement issueTypeButton;
 
+    @FindBy(id="issue-create.ui.modal.modal-body")
+    private WebElement createIssueModal;
+
     public ProjectPage (){
         PageFactory.initElements(getDriver(), this);
     }
 
+    @Step("Open header drop-down menu on the JIRA project page")
     public ProjectPage openMenu(){
-        headerMenuButton.click();
+        try {
+            headerMenuButton.click();
+        }catch (NoSuchElementException | StaleElementReferenceException e){
+            MyUtils.makeScreenshot(getDriver(),
+                    "failure- org.example.projectPage.openMenu" + System.currentTimeMillis() + ".png");
+        }
         return this;
     }
 
+
+    @Step("Click \"Profile\" link in header drop-down menu on the JIRA project page")
     public ProjectPage openProfile(){
         profileMenu.click();
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.urlContains("jira/people"));
         return this;
     }
 
+    @Step("Get profile email on profile page")
     public String getProfileEmail(){
         return profileEmail.getText();
     }
 
+    @Step("Click \"Create\" button in header the JIRA project page")
     public ProjectPage clickCreateButton(){
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.urlContains("chonkaproject.atlassian.net"));
+
         createButton.click();
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOf(createIssueModal));
         return this;
     }
 
+    @Step("Open issue types list on Create issue modal")
     public ProjectPage openIssueType(){
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOf(openIssueTypeButton));
         openIssueTypeButton.click();
         return this;
     }
 
+    @Step("Select issue type on Create issue modal")
     public ProjectPage selectIssueType(int number){
         try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
-
-        // select issue type
-        try {
-            WebElement selectTypeButton = getDriver().findElement(By
-                    .id("react-select-4-option-"+number));
+            WebElement selectTypeButton = new WebDriverWait(getDriver(), Duration.ofSeconds(3))
+                    .until(driver -> driver.findElement(By.id("react-select-4-option-"+ number)));
             selectTypeButton.click();
-        } catch (NoSuchElementException e) { }
+        } catch (NoSuchElementException | TimeoutException e) { }
         return this;
     }
 
+    @Step("Fill issue summary on Create issue modal")
     public ProjectPage fillIssueSummaryField(String text){
         issueSummaryField.sendKeys(text);
         return this;
     }
 
+    @Step("Fill issue description on Create issue modal")
     public ProjectPage fillIssueDescriptionField(String text){
         issueDescriptionField.sendKeys(text);
         return this;
     }
 
+    @Step("Click \"Assign to me\" button on Create issue modal")
     public ProjectPage clickAssignToMeButton(){
         assignToMeButton.click();
         return this;
     }
 
+    @Step("Click \"Create issue\" button on Create issue modal")
     public ProjectPage clickCreateIssueButton(){
         createIssueButton.click();
         return this;
     }
 
+    @Step("Check if success alert is visible")
     public boolean getSuccess(){
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
+        new WebDriverWait(getDriver(), Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOf(successAlert));
+
         return successAlert.isDisplayed();
     }
 
+    @Step("Get success alert text")
     public String getSuccessAreaText(){
         return successAreaText.getText();
     }
 
+    @Step("Click \"View issue\" link on the success alert")
     public ProjectPage clickViewIssueLink(){
         viewIssueLink.click();
         return this;
     }
 
+    @Step("Get issue type from issue button")
     public String getIssueTypeButtonText(){
         return issueTypeButton.getAttribute("aria-label");
     }
+
 }
