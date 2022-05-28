@@ -1,4 +1,4 @@
-package JiraTests.utils;
+package JiraTests.Helpers;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,13 +9,13 @@ public class ConfigProperties {
         protected static Properties PROPERTIES;
         static {
             try {
-                //указание пути до файла с настройками
+                //СѓРєР°Р·Р°РЅРёРµ РїСѓС‚Рё РґРѕ С„Р°Р№Р»Р° СЃ РЅР°СЃС‚СЂРѕР№РєР°РјРё
                 fileInputStream = new FileInputStream("src/test/resources/config.properties");
                 PROPERTIES = new Properties();
                 PROPERTIES.load(fileInputStream);
             } catch (IOException e) {
                 e.printStackTrace();
-                //обработка возможного исключения (нет файла и т.п.)
+                //РѕР±СЂР°Р±РѕС‚РєР° РІРѕР·РјРѕР¶РЅРѕРіРѕ РёСЃРєР»СЋС‡РµРЅРёСЏ (РЅРµС‚ С„Р°Р№Р»Р° Рё С‚.Рї.)
             } finally {
                 if (fileInputStream != null)
                     try {
@@ -23,7 +23,7 @@ public class ConfigProperties {
                     } catch (IOException e) {
                         e.printStackTrace(); } } }
         /**
-         * метод для возврата строки со значением из файла с настройками
+         * РјРµС‚РѕРґ РґР»СЏ РІРѕР·РІСЂР°С‚Р° СЃС‚СЂРѕРєРё СЃРѕ Р·РЅР°С‡РµРЅРёРµРј РёР· С„Р°Р№Р»Р° СЃ РЅР°СЃС‚СЂРѕР№РєР°РјРё
          */
         public static String getProperty(String key) {
             return PROPERTIES.getProperty(key);
