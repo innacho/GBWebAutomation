@@ -2,4 +2,6 @@
 .allure
 allure-results
 target
+build
+logs
 GBwebAutomation.iml
